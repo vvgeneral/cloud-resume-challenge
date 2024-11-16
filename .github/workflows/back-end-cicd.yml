@@ -22,7 +22,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Run Terraform Init
-        run: terraform init
+        run: cd backend && terraform init
 
       - name: Run Terraform Apply
-        run: terraform apply -auto-approve
+        run: cd backend && terraform apply -auto-approve
