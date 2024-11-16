@@ -13,35 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Install jq (if not already installed)
-      - name: Install jq
-        run: sudo apt-get install jq
-
-      # Refresh AWS session token (every time this runs)
-      - name: Refresh AWS Session Token
-        run: |
-          # Retrieve new session credentials from AWS STS
-          CREDS_JSON=$(aws sts get-session-token --duration-seconds 3600)
-          echo "Full session token response: $CREDS_JSON"  # Debugging line
-          
-          # Extract new credentials and set them as environment variables
-          echo "AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
-
-      # Set up AWS CLI with refreshed credentials
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      # Run Terraform Init
       - name: Run Terraform Init
         run: cd backend && terraform init
 
-      # Run Terraform Apply
       - name: Run Terraform Apply
-        run: cd backend && terraform apply -auto-approve
+        run: cd backend && terraform destroy -auto-approve
