@@ -1,0 +1,46 @@
+# Terraform directories and state files
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Crash logs and debugging files
+crash.log
+*.tfplan
+
+# Terraform provider binaries
+terraform-provider-*
+
+# Local environment settings
+.env
+
+# Node.js modules (if using Node.js in your frontend)
+node_modules/
+
+# Compiled assets
+*.exe
+*.dll
+*.so
+*.dylib
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE/project-specific files
+.vscode/
+.idea/
+*.iml
+
+# Frontend build files (if applicable)
+dist/
+build/
+
+# S3 bucket sync cache (if using AWS CLI to sync)
+.aws-s3-cache/
