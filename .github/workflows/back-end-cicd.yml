@@ -13,16 +13,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Install jq (if not already installed)
+      - name: Install jq
+        run: sudo apt-get install jq
+
       # Refresh AWS session token (every time this runs)
       - name: Refresh AWS Session Token
         run: |
+          # Retrieve new session credentials from AWS STS
           CREDS_JSON=$(aws sts get-session-token --duration-seconds 3600)
+          echo "Full session token response: $CREDS_JSON"  # Debugging line
           
+          # Extract new credentials and set them as environment variables
           echo "AWS_ACCESS_KEY_ID=$(echo $CREDS_JSON | jq -r .Credentials.AccessKeyId)" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS_JSON | jq -r .Credentials.SecretAccessKey)" >> $GITHUB_ENV
           echo "AWS_SESSION_TOKEN=$(echo $CREDS_JSON | jq -r .Credentials.SessionToken)" >> $GITHUB_ENV
 
-      # Set up AWS CLI with GitHub Secrets (this uses the refreshed credentials)
+      # Set up AWS CLI with refreshed credentials
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
