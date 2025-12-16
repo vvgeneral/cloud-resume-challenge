@@ -1,4 +1,4 @@
-const words = ["IT Graduate", "Coding Enthusiast", "AWS Professional", "Solutions Architect", "Continuous Learner"]; 
+const words = ["IT Graduate", "Cloud Support Specialist", "AWS Professional", "Cloud Technology Enthusiast", "Technology Professional"]; 
 let wordIndex = 0;  
 let charIndex = 0;  
 let typing = true;   
